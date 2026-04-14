@@ -22,24 +22,41 @@ A full-stack web application that allows users to search for available insurance
 obie-challenge/
 ├── frontend/          # React frontend
 │   ├── public/
+│   │   ├── favicon.ico
+│   │   ├── index.html
+│   │   ├── logo.png
+│   │   ├── mainifest.json
+│   │   └── robots.txt
 │   └── src/
 │       ├── components/
 │       │   ├── CarrierSearch.tsx
 │       │   ├── CarrierSearch.css
+│       │   ├── CarrierSearch.test.tsx
 │       │   ├── Header.tsx
-│       │   └── Header.css
-│       └── styles/
-│           └── theme.css
+│       │   ├── Header.css
+│       │   └── Header.test.tsx
+│       ├── styles/
+│       │   └── theme.css
+│       ├── App.tsx
+│       └── index.tsx
 ├── backend/           # Node/Express backend
 │   └── src/
 │       ├── controllers/
+│       │   ├── healthController.ts
 │       │   └── sheetsController.ts
 │       ├── routes/
+│       │   ├── healthRoutes.ts
 │       │   └── sheetsRoutes.ts
 │       ├── services/
+│       │   ├── healthService.ts
 │       │   └── sheetsService.ts
+│       ├── tests/
+│       │   └── sheetsController.test.ts
 │       └── index.ts
-└── package.json       # Root package.json
+├── .env               # Not committed - see Environment Variables
+├── .gitignore
+├──  package.json       # Root package.json
+└── README.md
 ```
 ---
 
