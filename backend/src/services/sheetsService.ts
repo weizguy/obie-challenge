@@ -2,30 +2,56 @@ import { parse } from 'csv-parse/sync';
 
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
 
-const TAB_MAP: Record<string, string> = {
-    'auto': '137794754',
-    'fire': '137794754',
-    'flood': '1431100651',
-  };
+const TABS: Record<string, string> = {
+  'auto': process.env.GID_AUTO_FIRE || '',
+  'fire': process.env.GID_AUTO_FIRE || '',
+  'flood': process.env.GID_FLOOD || '',
+};
 
-  const getGidByName = (tabNames: string[]): string => {
-    for (const name of tabNames) {
-      const key = Object.keys(TAB_MAP).find(k => k.toLowerCase().includes(name.toLowerCase()));
-      if (key) return TAB_MAP[key];
-    }
-    throw new Error(`No tab found matching: ${tabNames.join(', ')}`);
-  };
-  
-  export const getTabByName = async (tabName: string) => {
-    const tabNames = tabName.split(',').map(n => n.trim());
-    const gid = getGidByName(tabNames);
-    const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv&gid=${gid}`;
-  
-    const response = await fetch(url);
-    const csv = await response.text();
-  
-    return parse(csv, { columns: true, skip_empty_lines: true });
-  };
+type SheetCache = {
+  data: any[];
+  lastFetched: Date;
+};
 
+const cache: Record<string, SheetCache> = {};
+const CACHE_TTL_MS = 1000 * 60 * 60; // 1 hour
 
+const fetchSheetData = async (gid: string) => {
+  const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv&gid=${gid}`;
+  const response = await fetch(url);
+  const csv = await response.text();
+  return parse(csv, { columns: true, skip_empty_lines: true });
+};
 
+const isCacheValid = (key: string) => {
+  if (!cache[key]) return false;
+  const age = Date.now() - cache[key].lastFetched.getTime();
+  return age < CACHE_TTL_MS;
+};
+
+export const getTabByName = async (tabName: string) => {
+  const key = Object.keys(TABS).find(k =>
+    tabName.toLowerCase().includes(k.toLowerCase())
+  );
+
+  if (!key) throw new Error(`Tab not found for: ${tabName}`);
+
+  if (!isCacheValid(key)) {
+    console.log(`Cache miss for "${key}", fetching from Google Sheets...`);
+    const data = await fetchSheetData(TABS[key]);
+    cache[key] = { data, lastFetched: new Date() };
+  } else {
+    console.log(`Cache hit for "${key}"`);
+  }
+
+  return cache[key].data;
+};
+
+export const getTabData = async (gid: string) => {
+  return fetchSheetData(gid);
+};
+
+export const clearCache = () => {
+  Object.keys(cache).forEach(key => delete cache[key]);
+  console.log('Sheet cache cleared');
+};
