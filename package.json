@@ -1,0 +1,26 @@
+{
+  "name": "obie-challenge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"npm run dev --prefix backend\" \"npm start --prefix frontend\"",
+    "build": "npm run build --prefix backend && npm run build --prefix frontend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weizguy/obie-challenge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/weizguy/obie-challenge/issues"
+  },
+  "homepage": "https://github.com/weizguy/obie-challenge#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
