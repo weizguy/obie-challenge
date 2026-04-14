@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import './CarrierSearch.css';
 
-const STATES = ['IL', 'IN', 'MI'];
+const STATES = [
+  { label: 'Illinois', value: 'IL' },
+  { label: 'Indiana', value: 'IN' },
+  { label: 'Michigan', value: 'MI' },
+];
 const COVERAGE_TYPES = ['Auto', 'Fire', 'Flood'];
 
 interface CarrierRow {
@@ -62,7 +66,7 @@ const CarrierSearch = () => {
             <label className="label">State</label>
             <select className="select" value={state} onChange={e => setState(e.target.value)}>
               <option value=''>Select a State</option>
-              {STATES.map(s => <option key={s} value={s}>{s}</option>)}
+              {STATES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
             </select>
           </div>
 

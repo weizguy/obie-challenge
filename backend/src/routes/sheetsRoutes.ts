@@ -1,9 +1,11 @@
 import express from 'express';
 import type { Router } from 'express';
-import { getTabByTabName } from '../controllers/sheetsController';
+import { getTab, getTabByTabName, refreshCache } from '../controllers/sheetsController';
 
 const router: Router = express.Router();
 
+router.get('/gid/:gid', getTab);
 router.get('/name/:tabName', getTabByTabName);
+router.post('/refresh', refreshCache);
 
 export default router;
