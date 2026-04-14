@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import './CarrierSearch.css';
 
 const STATES = ['IL', 'IN', 'MI'];
 const COVERAGE_TYPES = ['Auto', 'Fire', 'Flood'];
@@ -36,11 +37,8 @@ const CarrierSearch = () => {
         .filter(row => {
           const value = row[state as keyof CarrierRow]?.toUpperCase();
           const coverageUpper = coverage.toUpperCase();
-          if (coverageUpper === 'FLOOD') {
-            return value === 'YES';
-          } else {
-            return value === coverageUpper || value === 'BOTH';
-          }
+          if (coverageUpper === 'FLOOD') return value === 'YES';
+          return value === coverageUpper || value === 'BOTH';
         })
         .map(row => row.Carrier)
         .filter(Boolean);
@@ -54,45 +52,54 @@ const CarrierSearch = () => {
   };
 
   return (
-    <div>
-      <h1>Carrier Search</h1>
+    <div className="page">
+      <div className="card">
+        <h1 className="title">Carrier Search</h1>
+        <p className="subtitle">Find available carriers by state and coverage type</p>
 
-      <div>
-        <select value={state} onChange={e => setState(e.target.value)}>
-          <option value=''>Select a State</option>
-          {STATES.map(s => (
-            <option key={s} value={s}>{s}</option>
-          ))}
-        </select>
+        <div className="form">
+          <div className="field">
+            <label className="label">State</label>
+            <select className="select" value={state} onChange={e => setState(e.target.value)}>
+              <option value=''>Select a State</option>
+              {STATES.map(s => <option key={s} value={s}>{s}</option>)}
+            </select>
+          </div>
 
-        <select value={coverage} onChange={e => setCoverage(e.target.value)}>
-          <option value=''>Select Coverage Type</option>
-          {COVERAGE_TYPES.map(c => (
-            <option key={c} value={c}>{c}</option>
-          ))}
-        </select>
+          <div className="field">
+            <label className="label">Coverage Type</label>
+            <select className="select" value={coverage} onChange={e => setCoverage(e.target.value)}>
+              <option value=''>Select Coverage Type</option>
+              {COVERAGE_TYPES.map(c => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </div>
 
-        <button onClick={handleSearch} disabled={!state || !coverage || loading}>
-          {loading ? 'Searching...' : 'Search'}
-        </button>
-      </div>
-
-      {error && <p>{error}</p>}
-
-      {carriers.length > 0 && (
-        <div>
-          <h2>Available Carriers</h2>
-          <ul>
-            {carriers.map(carrier => (
-              <li key={carrier}>{carrier}</li>
-            ))}
-          </ul>
+          <button
+            className="button"
+            onClick={handleSearch}
+            disabled={!state || !coverage || loading}
+          >
+            {loading ? 'Searching...' : 'Search'}
+          </button>
         </div>
-      )}
 
-      {!loading && hasSearched &&carriers.length === 0 && (
-        <p>No carriers found for {state} - {coverage}</p>
-      )}
+        {error && <p className="error">{error}</p>}
+
+        {carriers.length > 0 && (
+          <div className="results">
+            <h2 className="results-title">Available Carriers</h2>
+            <ul className="carrier-list">
+              {carriers.map(carrier => (
+                <li key={carrier} className="carrier-item">{carrier}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {!loading && hasSearched && carriers.length === 0 && (
+          <p className="no-results">No carriers found for {state} - {coverage}</p>
+        )}
+      </div>
     </div>
   );
 };

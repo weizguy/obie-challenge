@@ -1,0 +1,24 @@
+:root {
+    --color-bg: #0E2325;
+    --color-surface: #1C3738;
+    --color-border: #2a4a4b;
+    --color-accent: #EAFF90;
+    --color-accent-hover: #C6FF28;
+    --color-text-primary: #FBFFE4;
+    --color-text-secondary: #EAFF90;
+    --color-font: #1C3738;
+    --font-family: 'Inter', sans-serif;
+    --border-radius: 8px;
+  }
+  
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+    font-family: var(--font-family);
+  }
