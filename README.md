@@ -18,7 +18,7 @@ A full-stack web application that allows users to search for available insurance
 ---
 
 ## Project Structure
-
+```
 obie-challenge/
 ├── frontend/          # React frontend
 │   ├── public/
@@ -40,7 +40,7 @@ obie-challenge/
 │       │   └── sheetsService.ts
 │       └── index.ts
 └── package.json       # Root package.json
-
+```
 ---
 
 ## Prerequisites
