@@ -2,6 +2,7 @@ import { parse } from 'csv-parse/sync';
 
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
 
+// if spreadsheet is updated, update the GID here and add to .env
 const TABS: Record<string, string> = {
   'auto': process.env.GID_AUTO_FIRE || '',
   'fire': process.env.GID_AUTO_FIRE || '',
@@ -51,6 +52,7 @@ export const getTabData = async (gid: string) => {
   return fetchSheetData(gid);
 };
 
+// clear cache when spreadsheet is updated
 export const clearCache = () => {
   Object.keys(cache).forEach(key => delete cache[key]);
   console.log('Sheet cache cleared');

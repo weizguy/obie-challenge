@@ -7,8 +7,8 @@ export const getTab = async (req: Request, res: Response) => {
     const data = await getTabData(gid);
     res.json(data);
   } catch (error) {
-    console.error('Sheets error:', error);
-    res.status(500).json({ message: 'Failed to fetch sheet data' });
+    console.error('Tabs error:', error);
+    res.status(500).json({ message: 'Failed to fetch tab' });
   }
 };
 
